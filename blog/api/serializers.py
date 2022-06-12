@@ -4,6 +4,16 @@ from blango_auth.models import User
 from blog.models import Post, Tag, Comment
 
 
+# Remember that get_or_create() will fetch an instance from the database given the search parameters, or create one if
+# it doesn't exists. It returns a 2-element tuple (object, created), where object is the Tag (which might have just been
+# created) and created is True if the object was created or False if not. We just want the object so we return the first
+# element from the tuple.
+# The fail() method is just a shortcut method that DRF provides, to raise a ValidationError.
+# The get_or_create method returns a tuple with two items. The first item (‘0’) is the tag for the post. The second item
+# (‘1’) is a boolean value that represents if the method created the tag or not. So changing 0 to 1 replaces the string
+# value of the tag with a boolean value.
+
+
 class TagField(serializers.SlugRelatedField):
     def to_internal_value(self, data):
         try:
