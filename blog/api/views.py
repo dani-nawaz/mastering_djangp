@@ -1,9 +1,10 @@
-from rest_framework import generics
+from rest_framework import generics, viewsets
 
 from blango_auth.models import User
 from blog.api.permissions import AuthorModifyOrReadOnly, IsAdminUserForObject
-from blog.api.serializers import PostSerializer, UserSerializer, PostDetailSerializer
+from blog.api.serializers import PostSerializer, UserSerializer, PostDetailSerializer, TagSerializer
 from blog.models import Post
+from blog.models import Tag
 
 
 class PostList(generics.ListCreateAPIView):
@@ -23,3 +24,6 @@ class UserDetail(generics.RetrieveAPIView):
     serializer_class = UserSerializer
 
 
+class TagViewSet(viewsets.ModelViewSet):
+    queryset = Tag.objects.all()
+    serializer_class = TagSerializer

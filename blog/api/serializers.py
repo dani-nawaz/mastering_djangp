@@ -30,8 +30,11 @@ class PostSerializer(serializers.ModelSerializer):
         slug_field="value", many=True, queryset=Tag.objects.all()
     )
 
-    author = serializers.HyperlinkedRelatedField(
-        queryset=User.objects.all(), view_name="api_user_detail", lookup_field="email"
+    # author = serializers.HyperlinkedRelatedField(
+    #     queryset=User.objects.all(), view_name="api_user_detail", lookup_field="email"
+    # )
+    author = serializers.SlugRelatedField(
+        slug_field="email", many=True, queryset=User.objects.all()
     )
 
     class Meta:
@@ -74,3 +77,9 @@ class PostDetailSerializer(PostSerializer):
             comment.save()
 
         return instance
+
+
+class TagSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Tag
+        fields = "__all__"
