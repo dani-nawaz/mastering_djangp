@@ -1,5 +1,5 @@
 from rest_framework import generics, viewsets
-
+from rest_framework.throttling import ScopedRateThrottle
 from blango_auth.models import User
 from blog.api.permissions import AuthorModifyOrReadOnly, IsAdminUserForObject
 from blog.api.serializers import PostSerializer, UserSerializer, PostDetailSerializer, TagSerializer, CommentSerializer
@@ -64,10 +64,14 @@ class PostDetail(generics.RetrieveUpdateDestroyAPIView):
     permission_classes = [AuthorModifyOrReadOnly | IsAdminUserForObject]
     queryset = Post.objects.all()
     serializer_class = PostDetailSerializer
+    throttle_classes = [ScopedRateThrottle]
+    throttle_scope = "post_api"
 
 
 class UserDetail(generics.RetrieveAPIView):
     lookup_field = "email"
+    throttle_classes = [ScopedRateThrottle]
+    throttle_scope = "user_api"
     queryset = User.objects.all()
     serializer_class = UserSerializer
 
