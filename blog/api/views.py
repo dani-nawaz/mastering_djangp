@@ -1,5 +1,6 @@
 from rest_framework import generics, viewsets
-from rest_framework.throttling import ScopedRateThrottle
+from rest_framework import throttling
+from rest_framework.pagination import PageNumberPagination
 from blango_auth.models import User
 from blog.api.permissions import AuthorModifyOrReadOnly, IsAdminUserForObject
 from blog.api.serializers import PostSerializer, UserSerializer, PostDetailSerializer, TagSerializer, CommentSerializer
@@ -64,8 +65,11 @@ class PostDetail(generics.RetrieveUpdateDestroyAPIView):
     permission_classes = [AuthorModifyOrReadOnly | IsAdminUserForObject]
     queryset = Post.objects.all()
     serializer_class = PostDetailSerializer
-    throttle_classes = [ScopedRateThrottle]
+    pagination_class = PageNumberPagination
+    throttle_classes = [throttling.ScopedRateThrottle]
     throttle_scope = "post_api"
+    filterset_fields = ["author", "tags"]
+    ordering_fields = ["published_at", "author", "title", "slug"]
 
     # def get_queryset(self):
     #     if self.request.user.is_anonymous:
@@ -141,7 +145,7 @@ class PostDetail(generics.RetrieveUpdateDestroyAPIView):
 
 class UserDetail(generics.RetrieveAPIView):
     lookup_field = "email"
-    throttle_classes = [ScopedRateThrottle]
+    # throttle_classes = [ScopedRateThrottle]
     throttle_scope = "user_api"
     queryset = User.objects.all()
     serializer_class = UserSerializer

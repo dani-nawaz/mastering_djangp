@@ -18,6 +18,8 @@ REST_FRAMEWORK = {
     "DEFAULT_PERMISSION_CLASSES": [
         "rest_framework.permissions.IsAuthenticated",
     ],
+    "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.PageNumberPagination",
+    "PAGE_SIZE": 100,
     "DEFAULT_AUTHENTICATION_CLASSES": [
         "rest_framework.authentication.BasicAuthentication",
         "rest_framework.authentication.SessionAuthentication",
@@ -29,6 +31,12 @@ REST_FRAMEWORK = {
         "blog.api.throttling.UserSustainedThrottle",
         "blog.api.throttling.UserBurstThrottle",
     ],
+    "DEFAULT_FILTER_BACKENDS": [
+        "django_filters.rest_framework.DjangoFilterBackend",
+        "django_filters.rest_framework.DjangoFilterBackend",
+        "rest_framework.filters.OrderingFilter"
+    ],
+
     "DEFAULT_THROTTLE_RATES": {
         "anon_sustained": "500/day",
         "anon_burst": "10/minute",
