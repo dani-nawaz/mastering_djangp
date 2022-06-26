@@ -33,7 +33,7 @@ from django.views.decorators.cache import cache_page
 from django.views.decorators.vary import vary_on_headers, vary_on_cookie
 
 
-# class PostViewSet(viewsets.ModelViewSet):
+class PostViewSet(viewsets.ModelViewSet):
 #     permission_classes = [AuthorModifyOrReadOnly | IsAdminUserForObject]
 #     queryset = Post.objects.all()
 #
